@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart Example</title>
+    <style>
+        /* Style cho sản phẩm */
+        .product {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        /* Style cho giỏ hàng */
+        .cart {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Danh sách sản phẩm</h1>
+        <div class="product" id="product1">
+            <h2>Sản phẩm 1</h2>
+            <p>Giá: $10</p>
+            <button onclick="addToCart('product1', 'Sản phẩm 1', 10)">Thêm vào giỏ hàng</button>
+        </div>
+        <div class="product" id="product2">
+            <h2>Sản phẩm 2</h2>
+            <p>Giá: $20</p>
+            <button onclick="addToCart('product2', 'Sản phẩm 2', 20)">Thêm vào giỏ hàng</button>
+        </div>
+        
+        <!-- Hiển thị giỏ hàng -->
+        <div class="cart">
+            <h2>Giỏ hàng</h2>
+            <ul id="cartItems">
+                <!-- Danh sách sản phẩm trong giỏ hàng sẽ được thêm vào đây -->
+            </ul>
+            <p>Tổng tiền: $<span id="totalPrice">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Mảng lưu trữ các sản phẩm trong giỏ hàng
+        let cart = [];
+
+        // Hàm thêm sản phẩm vào giỏ hàng
+        function addToCart(productId, productName, productPrice) {
+            // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+            let existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity++; // Nếu đã tồn tại, tăng số lượng lên 1
+            } else {
+                // Nếu chưa tồn tại, thêm sản phẩm mới vào giỏ hàng
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+
+            // Cập nhật giao diện giỏ hàng
+            displayCart();
+        }
+
+        // Hàm hiển thị giỏ hàng
+        function displayCart() {
+            let cartItems = document.getElementById("cartItems");
+            let totalPrice = document.getElementById("totalPrice");
+            let cartList = "";
+
+            let total = 0;
+
+            // Lặp qua mỗi sản phẩm trong giỏ hàng và tạo HTML tương ứng
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                cartList += `<li>${item.name} - $${item.price} x ${item.quantity}</li>`;
+            });
+
+            // Hiển thị danh sách sản phẩm và tổng tiền trong giỏ hàng
+            cartItems.innerHTML = cartList;
+            totalPrice.textContent = total;
+        }
+    </script>
+</body>
+</html>
